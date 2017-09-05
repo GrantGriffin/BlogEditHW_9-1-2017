@@ -1,0 +1,430 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Sabio - AJAX Lab Exercise</title>
+    <!-- Custom styles for this template -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        a.navbar-brand {
+            font-weight: 100;
+            margin-top: 10px;
+            padding: 0px 9px;
+            line-height: 21px;
+            text-transform: uppercase;
+            font-size: 29px;
+            display: block;
+            float: left;
+            height: 60px;
+            line-height: 60px;
+            font-family: 'Open Sans', Tahoma, sans-serif;
+        }
+
+        .navbar-brand, .navbar-nav > li > a {
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.25);
+        }
+
+        .well {
+            padding: 10px 10px 0px 10px;
+        }
+
+        a.navbar-brand span {
+            float: left;
+            height: 20px;
+            line-height: 20px;
+        }
+
+        form {
+            margin-top: 10px;
+        }
+
+        a.navbar-brand small {
+            color: green;
+            font-size: 13px;
+            height: 20px;
+            line-height: 20px;
+            font-weight: 100;
+            text-transform: none;
+            font-family: "Pacifico", Monaco, Consolas, monospace;
+        }
+
+        .blog {
+            background-color: #f5f5f5;
+            margin-top: 10px;
+            padding-top: 10px;
+            border: 1px solid #e3e3e3;
+            border-radius: 4px;
+        }
+
+        fieldset {
+            min-height: 20px;
+            padding: 19px;
+            margin-bottom: 20px;
+            border: 1px solid #e3e3e3;
+            border-radius: 4px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+        }
+
+        .delete {
+            margin-right: 10px;
+        }
+
+        .name {
+            font-weight: bold;
+            color: royalblue;
+        }
+
+        .btn {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="register.html" class="navbar-brand ">
+                    <span class="logo">
+                        <strong>Sabio<br /></strong>
+                        <small>AJAX Lab Exercise</small>
+                    </span>
+                </a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right visible-xs"></ul>
+                <div class="nav navbar-nav navbar-right hidden-xs">
+                    <div class="row">
+                        <div class="pull-right">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h3>
+                    Manage Blogs
+                </h3>
+                <div class="well">
+                    <p>
+                        REST API End Point Authors - <a href="http://sabioapi2.azurewebsites.net/api/authors" target="_blank">http://sabioapi2.azurewebsites.net/api/authors</a><br />
+                        REST API End Point Blogs - <a href="http://sabioapi2.azurewebsites.net/api/blogs" target="_blank">http://sabioapi2.azurewebsites.net/api/blogs</a>
+                    </p>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 pull-right ">
+                        <button type="button" class="pull-right btn btn-sm btn-warning" id="reloadBtnBlog">Reload Blogs</button>
+                        <br />
+                        <hr />
+                    </div>
+                    <div class="col-sm-12 col-md-8">
+                        <form>
+                            <fieldset>
+                                <!-- Blog form -->
+                                <div>
+                                    <div class="form-group">
+                                        <label class="control-label">Title</label>
+                                        <div class="controls">
+                                            <input type="text" class="form-control" id="title" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label">Content</label>
+                                        <div class="controls">
+                                            <textarea class="form-control" id="content" rows="5"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label">Author <button type="button" class="pull-right btn btn-xs btn-info" id="reloadBtnAuthor">Reload Authors</button></label>
+                                        <div class="controls">
+                                            <select class="form-control" id="author">
+                                                <option>popupulate</option>
+                                                <option>this list</option>
+                                                <option>of authors</option>
+                                                <option>using ajax call</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group  ">
+                                        <div class="text-center">
+                                            <input type="submit" id="btnSubmit" class="btn btn-primary" value="Add Blog" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                    <div class="col-md-4  pull-right">
+                        <div id="blog-list">
+                            <!-- SINGLE Blog START -->
+                            <div class="row blog">
+                                <div class="col-sm-offset-1 col-sm-9">
+                                    <p class="title">Blog Title 1</p>
+                                    <p>ID: <small>123456789</small></p>
+                                </div>
+                                <input type="button" class="deleteBtn pull-right btn btn-sm btn-danger" value="x" />
+                            </div>
+                            <!-- SINGLE Blog END -->
+                            <!-- SINGLE Blog START -->
+                            <div class="row blog">
+                                <div class="col-sm-offset-1 col-sm-9">
+                                    <p class="title">Blog Title 2</p>
+                                    <p>ID: <small>123456789</small></p>
+                                </div>
+                                <input type="button" class="deleteBtn pull-right btn btn-sm btn-danger" value="x" />
+                            </div>
+                            <!-- SINGLE Blog END -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="container">
+            <hr />
+            <div class="row">
+                <div class="col-sm-4 col-xs-12">
+                    <p><strong>&copy; Sabio 2017</strong>  All rights reserved</p>
+                </div>
+                <div class="col-sm-8 col-xs-12">
+                    <p class="footer-links">
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="http://sabioapi2.azurewebsites.net/scripts/sabio.js"></script>
+    <!-- All your code goes below here-->
+    <script type="text/javascript">
+
+        sabio.page.ajax = {
+            urlAuthor: "http://sabioapi2.azurewebsites.net/api/authors"
+            , urlBlog: "http://sabioapi2.azurewebsites.net/api/blogs"
+        };
+
+        sabio.page.ajax.response = {
+            successGetAll: function (data, status, xhr) {
+                for (var i = 0; i < data.items.length; i++) {
+                    console.log(data.items[i]);
+
+                    if (sabio.page.currentRefresh === "author") {
+                        sabio.page.loadAuthor(data.items[i]);
+                    } else if (sabio.page.currentRefresh === "blog") {
+                        sabio.page.loadBlog(data.items[i]);
+                    }
+                }
+                //if (sabio.page.currentRefresh === "author") {
+                //    $("#author").prepend('<option value="">New Author</option>');
+                //    $("#author").val("");
+                //}
+
+            }
+            , successAdd: function (data, status, xhr) {
+                sabio.page.handlers.refreshBlogs();
+            }
+            , successGetBlog: function (data, status, xhr) {
+                console.log(data);
+                for (var i = 0; i < data.item.articles.length; i++) {
+                    if (data.item.articles[i].id = sabio.page.activeId)
+                        sabio.page.writeForm(data.item.articles[i], data.item.id);
+                }
+
+            }
+            , error: function (xhr, errorText, errorObject) {
+                console.log(xhr);
+            }
+        };
+
+        sabio.page.ajax.settings = {
+            getAll: {
+                type: "GET"
+                , headers: { "SABIO-AUTH": "U654SQ1BL" }
+                , success: sabio.page.ajax.response.successGetAll
+                , error: sabio.page.ajax.response.error
+                , async: false
+            }
+            , getBlog: {
+                type: "GET"
+                , headers: { "SABIO-AUTH": "U654SQ1BL" }
+                , success: sabio.page.ajax.response.successGetBlog
+                , error: sabio.page.ajax.response.error
+            }
+            , add: {
+                type: "POST"
+                , headers: { "SABIO-AUTH": "U654SQ1BL" }
+                , success: sabio.page.ajax.response.successAdd
+                , error: sabio.page.ajax.response.error
+                , contentType: " application/JSON"
+                , data: {}
+            }
+            , delete: {
+                type: "DELETE"
+                , headers: { "SABIO-AUTH": "U654SQ1BL" }
+                , success: sabio.page.ajax.response.successDelete
+                , error: sabio.page.ajax.response.error
+                , contentType: "application/JSON"
+                , data: {}
+            }
+            , update: {
+                type: "PUT"
+                , headers: { "SABIO-AUTH": "U654SQ1BL" }
+                , success: sabio.page.ajax.response.successUpdate
+                , error: sabio.page.ajax.response.error
+                , contentType: "application/JSON"
+                , data: {}
+            }
+        };
+
+        sabio.page.ajax.service = {
+            getAuth: function () {
+                $.ajax(sabio.page.ajax.urlAuthor, sabio.page.ajax.settings.getAll);
+            }
+            , getBlog: function () {
+                $.ajax(sabio.page.ajax.urlBlog, sabio.page.ajax.settings.getAll);
+            }
+            , getSingleBlog: function () {
+                $.ajax(sabio.page.ajax.urlBlog + "/" + sabio.page.activeId + "/author", sabio.page.ajax.settings.getBlog);
+            }
+            , add: function (data) {
+                sabio.page.ajax.settings.add.data = JSON.stringify(data);
+                $.ajax(sabio.page.ajax.urlBlog, sabio.page.ajax.settings.add);
+            }
+            , delete: function (id) {
+                //sabio.page.ajax.settings.delete.data = JSON.stringify({ id: id });
+                //$.ajax(sabio.page.ajax.url + "/" + id, sabio.page.ajax.settings.delete)
+            }
+            , update: function (data, id) {
+                //sabio.page.ajax.settings.update.data = JSON.stringify(data);
+                //$.ajax(sabio.page.ajax.url + "/" + id, sabio.page.ajax.settings.update)
+            }
+        };
+
+        sabio.page.startUp = function () {
+            sabio.page.handlers.refreshAuthors();
+            sabio.page.handlers.refreshBlogs();
+            $("#btnSubmit").on("click", sabio.page.handlers.blogSubmit);
+            $("#reloadBtnAuthor").on("click", sabio.page.handlers.refreshAuthors);
+            $("#reloadBtnBlog").on("click", sabio.page.handlers.refreshBlogs);
+            $("#blog-list").on("click", ".blog", sabio.page.handlers.editBlog);
+            $("#blog-list").on("click", ".deleteBtn", sabio.page.handlers.deleteBlog);
+        };
+
+        sabio.page.handlers.blogSubmit = function (evt) {
+            evt.preventDefault();
+            //add if else for edit mode
+            var data = sabio.page.readForm();
+            sabio.page.ajax.service.add(data);
+            //if (!sabio.page.activeId) {
+                
+
+            //} else {
+            //    sabio.page.activeId = null;
+            //    $("#btnSubmit").val("Add Blog");
+            //}
+
+
+
+        };
+
+        sabio.page.handlers.refreshAuthors = function () {
+            $("#author").empty();
+            sabio.page.currentRefresh = "author";
+            sabio.page.ajax.service.getAuth();
+        };
+
+        sabio.page.handlers.refreshBlogs = function () {
+            $("#blog-list").empty();
+            sabio.page.currentRefresh = "blog";
+            sabio.page.ajax.service.getBlog();
+        };
+
+        sabio.page.handlers.editBlog = function () {
+            sabio.page.activeId = $(this).find("p small").text();
+            sabio.page.ajax.service.getSingleBlog();
+            $("#btnSubmit").val("Update Blog");
+        };
+
+        sabio.page.handlers.deleteBlog = function () {
+
+        };
+
+        sabio.page.loadAuthor = function (data) {
+
+            var name = data.firtName + " " + data.lastName;
+            var id = data.id;
+            optionStr = '<option value="' + id + '">' + name + '</option>';
+            $("#author").prepend(optionStr);
+
+        };
+
+        sabio.page.loadBlog = function (data) {
+            var template = $($("#template").html()).clone();
+            template.find(".title").text(data.title);
+            template.find("p small").text(data.id);
+            $("#blog-list").prepend(template);
+
+        };
+
+        sabio.page.readForm = function () {
+            var title = $("#title").val();
+            var content = $("#content").val();
+            var authorId = $("#author").val();
+
+            formData = {
+                title: title
+                , content: content
+                , authorId: authorId
+            };
+
+            return formData;
+        };
+
+        sabio.page.writeForm = function (blog, authorId) { 
+            $("#title").val(blog.title);
+            $("#content").val(blog.content);
+            $("#author").val(authorId);
+        };
+
+    </script>
+
+
+    <script type="text/html" id="template">
+
+        <div class="row blog">
+            <div class="col-sm-offset-1 col-sm-9">
+                <p class="title">Blog Title 2</p>
+                <p>ID: <small>123456789</small></p>
+            </div>
+            <input type="button" class="deleteBtn pull-right btn btn-sm btn-danger" value="x" />
+        </div>
+
+    </script>
+
+
+</body>
+</html>
